@@ -1,59 +1,49 @@
-import telebot
-from telebot import types
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+import models
+from Admin import Admin
+
+from Bot_singleton import BotSingleton
+from Catalog import Catalog
+from User import User
+
+
+# from creating_stuffs import creating_stuffs
+# from creating_user import creating_user
+
+
+bot = BotSingleton()
 
 
 
 
-bot = telebot.TeleBot('6728698451:AAGKVYgAFRGo0EQSZRCh2-A_EnNY_BbjQg0')
-
-name = '';
-surname = '';
-age = 0;
 
 
+admin = Admin()
 
-@bot.message_handler(content_types=['text'])
-def start(message):
-    if message.text == '/reg':
-        bot.send_message(message.from_user.id, "Как тебя зовут?");
-        bot.register_next_step_handler(message, get_name); #следующий шаг – функция get_name
-    else:
-        bot.send_message(message.from_user.id, 'Напиши /reg');
-
-def get_name(message): #получаем фамилию
-    global name;
-    name = message.text;
-    bot.send_message(message.from_user.id, 'Какая у тебя фамилия?');
-    bot.register_next_step_handler(message, get_surname);
-
-def get_surname(message):
-    global surname;
-    surname = message.text;
-    bot.send_message(message.from_user.id, 'Сколько тебе лет?')
-    bot.register_next_step_handler(message, get_age)
-
-def get_age(message):
-    global age
-    while age == 0: #проверяем что возраст изменился
-        try:
-             age = int(message.text) #проверяем, что возраст введен корректно
-        except Exception:
-             bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
-    keyboard = types.InlineKeyboardMarkup() #наша клавиатура
-    key_yes = types.InlineKeyboardButton(text='Да', callback_data='yes'); #кнопка «Да»
-    keyboard.add(key_yes); #добавляем кнопку в клавиатуру
-    key_no= types.InlineKeyboardButton(text='Нет', callback_data='no')
-    keyboard.add(key_no);
-    question = 'Тебе '+str(age)+' лет, тебя зовут '+name+' '+surname+'?'
-    bot.send_message(message.from_user.id, text=question, reply_markup=keyboard)
-
-@bot.callback_query_handler(func=lambda call: True)
-def callback_worker(call):
-    if call.data == "yes": #call.data это callback_data, которую мы указали при объявлении кнопки
-         #код сохранения данных, или их обработки
-        bot.send_message(call.message.chat.id, 'Запомню : )')
-    elif call.data == "no":
-        bot.send_message(call.message.chat.id, 'Давай введем еще раз')
+admin.creating_stuffs(Session())
 
 
-bot.polling(none_stop=True, interval=0)
+# @bot.message_handler(content_types=['text'])
+# def start(message):
+#     user=User(message=message)
+#     user.add_user_to_db()
+#
+#     bot.send_message(message.from_user.id,
+#                      f'Приветствую тебя {user.name} {user.fullname}. Чтобы посмотреть каталог продуктов нажмите /cat')
+#
+#     if message.text == '/cat':
+#         bot.register_next_step_handler(message, show_catalog)
+#
+#
+# def show_catalog(message):
+#     catalog = Catalog()
+#     stuffs = catalog.get_stuffs()
+#     print(stuffs)
+#
+#
+#
+#
+# bot.polling(none_stop=True, interval=0)
+
