@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
 import models
-from main import engine
 
 
 ###класс товара
@@ -14,7 +13,7 @@ class Stuff:
         self.count = count
 
    ### метод добавления товара в бд
-    def add_to_db(self, session:Session):
+    def add_to_db(self, session: Session):
         stuff = models.StuffsModel(
             name=self.name,
             category=self.category,

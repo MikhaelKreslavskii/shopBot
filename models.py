@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Integer, String, ForeignKey, BigInteger, select
-from sqlalchemy.orm import  as_declarative, mapped_column, Mapped, Session
+from sqlalchemy.orm import as_declarative, mapped_column, Mapped, Session, sessionmaker
+import uuid
 
-engine=create_engine('sqlite://',echo=False)
 
 @as_declarative()
 class AbstractModel:
@@ -13,8 +13,6 @@ class UserModel(AbstractModel):
     name: Mapped[str]= mapped_column()
     fullname: Mapped[str] = mapped_column()
     user_id: Mapped[int] = mapped_column(BigInteger)
-
-
 
 
 class StuffsModel(AbstractModel):
