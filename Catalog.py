@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 import models
+from Stuff import Stuff
 
 
 # class Singleton(object):
@@ -18,5 +19,5 @@ class Catalog(object):
         self.stuffs = session.query(models.StuffsModel).all()
         print(f"In catalog {self.stuffs}")
 
-    def get_stuffs(self):
+    def get_stuffs(self) -> list[Stuff]:
         return self.stuffs
