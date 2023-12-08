@@ -9,4 +9,4 @@ Session = sessionmaker(bind=engine)
 
 def create_db():
     print("Create db")
-    models.Base.metadata.create_all(engine)
+    models.AbstractModel.metadata.create_all(engine)

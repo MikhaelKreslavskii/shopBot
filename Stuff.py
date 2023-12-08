@@ -6,8 +6,8 @@ import uuid
 ###класс товара
 class Stuff:
     def __init__(self, name: str, category: str, description: str, price: int, count: int):
-        self.id = str(uuid.uuid4())
-        print(type(self.id))
+        # self.id = str(uuid.uuid4())
+        # print(type(self.id))
         self.name = name
         self.category = category
         self.description = description
@@ -17,7 +17,7 @@ class Stuff:
    ### метод добавления товара в бд
     def add_to_db(self, session: Session):
         stuff = models.StuffsModel(
-            id=self.id,
+            #id=self.id,
             name=self.name,
             category=self.category,
             description=self.description,
