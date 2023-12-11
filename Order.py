@@ -3,33 +3,33 @@ from sqlalchemy.orm import Session
 import models
 import uuid
 
+
 class Order:
-    def __init__(self, user_id: int, stuff_id: int, count_stuff: int, session: Session):
-        self.id = str(uuid.uuid4())
+    def __init__(self, user_id: int, stuff_id: int, count_stuff: int, ):
+        # self.id = str(uuid.uuid4())
         self.user_id = user_id
         self.stuff_id = stuff_id
-        self.count_stuff=count_stuff
-        self.session = Session
-    def create_order(self):
+        self.count_stuff = count_stuff
+
+    def create_order(self, session: Session):
         order = models.OrdersModel(
-            id= self.id,
+            # id= self.id,
             user_id=self.user_id,
             stuff_id=self.stuff_id,
             count_stuff=self.count_stuff
 
-            )
+        )
 
-        # with Session(engine) as session:
-        #     with session.begin():
-        #        # models.AbstractModel.metadata.create_all(engine)
-        #         session.add(stuff)
-        #         print(f"Add stuff to db {stuff}")
-        #         session.commit()
-
-        self.session.add(order)
-        self.session.commit()
-        self.session.close()
+        session.query(models.StuffsModel).filter(models.StuffsModel.id == self.stuff_id).update(
+        {'count': models.StuffsModel.count - self.count_stuff})
+        #stuffs= session.query(models.StuffsModel).all()
+        # for stuff in stuffs:
+        #     if int(stuff.count)<=0:
+        #         session.query(models.StuffsModel).filter(models.StuffsModel.id==stuff.id).delete()
 
 
 
 
+        session.add(order)
+        session.commit()
+        session.close()

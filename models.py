@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Integer, String, ForeignKey, BigInteger, select, Column, types, text, UUID
-from sqlalchemy.orm import as_declarative, mapped_column, Mapped, Session, sessionmaker, declarative_base
+from sqlalchemy.orm import as_declarative, mapped_column, Mapped, Session, sessionmaker, declarative_base, relationship
 import uuid
 
 
@@ -36,3 +36,5 @@ class OrdersModel(AbstractModel):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     stuff_id: Mapped[int] = mapped_column(ForeignKey('stuffs.id'))
     count_stuff: Mapped[int] = mapped_column()
+
+    stuff = relationship("StuffsModel", backref='order')
